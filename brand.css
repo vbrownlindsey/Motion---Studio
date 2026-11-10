@@ -1,0 +1,27 @@
+/* Your brand. Edit these values and every video picks them up. */
+:root {
+  /* Colors */
+  --bg: #0f1220;
+  --bg-accent: #1b2040;
+  --text: #f5f6fa;
+  --text-muted: #9aa3c7;
+  --primary: #ff6b4a;
+  --secondary: #4ad7c4;
+
+  /* Fonts (system fonts keep renders identical on any machine) */
+  --font-display: "Segoe UI Semibold", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+}
+
+h1, h2, h3 { font-family: var(--font-display); }

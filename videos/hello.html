@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Hello from my studio</title>
+<link rel="stylesheet" href="../brand.css">
+<style>
+  #stage { position: relative; width: 100vw; height: 100vh;
+    background: radial-gradient(circle at 50% 120%, var(--bg-accent), var(--bg) 70%); }
+  #bar { position: absolute; left: 50%; top: 58%; height: 8px; border-radius: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary)); transform: translateX(-50%); }
+  #title { position: absolute; left: 0; right: 0; top: 40%; text-align: center;
+    font-size: 110px; letter-spacing: -1px; will-change: transform, opacity; }
+  #title span { display: inline-block; }
+  #sub { position: absolute; left: 0; right: 0; top: 64%; text-align: center;
+    font-size: 36px; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div id="stage">
+  <h1 id="title"></h1>
+  <div id="bar"></div>
+  <div id="sub">motion graphics, written as code</div>
+</div>
+<script>
+  window.DURATION = 3;
+  window.SIZE = [1920, 1080];
+
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const easeOut = x => 1 - Math.pow(1 - x, 3);
+  const seg = (t, a, b) => clamp((t - a) / (b - a));
+
+  // Build the DOM once; render(t) only sets styles from t.
+  const words = "Hello from my studio".split(" ");
+  const title = document.getElementById("title");
+  const spans = words.map((w, i) => {
+    const s = document.createElement("span");
+    s.textContent = w;
+    if (i === 3) s.style.color = "var(--primary)";
+    title.appendChild(s);
+    if (i < words.length - 1) title.appendChild(document.createTextNode(" "));
+    return s;
+  });
+  const bar = document.getElementById("bar");
+  const sub = document.getElementById("sub");
+
+  window.render = function (t) {
+    spans.forEach((s, i) => {
+      const p = easeOut(seg(t, 0.15 + i * 0.18, 0.75 + i * 0.18));
+      s.style.opacity = p;
+      s.style.transform = `translateY(${(1 - p) * 60}px)`;
+    });
+    bar.style.width = easeOut(seg(t, 0.9, 1.7)) * 700 + "px";
+    const sp = easeOut(seg(t, 1.5, 2.1));
+    sub.style.opacity = sp;
+    sub.style.transform = `translateY(${(1 - sp) * 20}px)`;
+    // gentle fade-out at the end
+    document.getElementById("stage").style.opacity = 1 - seg(t, 2.7, 3);
+  };
+  window.render(0);
+</script>
+</body>
+</html>
